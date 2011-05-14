@@ -103,8 +103,9 @@ Image:<input name="image" type="file">
       json({'promoted' => item.promoted})      
     end
     
-    get '/items/promoted' do
+    post '/items/promoted' do
       items = Item.filter(:promoted => true).all
+      items = items.to_a.sort_by { rand }
       json_items(items)
     end
 
