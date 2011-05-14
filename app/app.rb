@@ -134,10 +134,11 @@ Image:<input name="image" type="file">
 
     post '/friends/:fbid' do
       profile = Profile.find_or_create(params[:fbid])
-      friends = params[:friends].split(/\s+/).each do |fid|
+      friends = params[:friends].split(/\s+/)
+      friends.each do |fid|
         profile.add_friend(Profile.find_or_create(fid))
       end
-      'OK'
+      friends.size.to_s
     end
 
       # p = params['talent']
