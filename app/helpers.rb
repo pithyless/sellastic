@@ -21,7 +21,7 @@ class Hash
   end
 end
 
-module Tikker
+module Sellastic
   module Helpers
 
     #
