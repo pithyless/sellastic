@@ -18,6 +18,10 @@ class Item < Sequel::Model
   many_to_one :profile
   many_to_many :tags
 
+  def self.find_by_token(t)
+    Item.filter(:token => t).first
+  end
+
   def self.find_nearby(lat, long)
     # TODO:
     # SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat)

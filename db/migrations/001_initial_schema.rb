@@ -24,6 +24,7 @@ Sequel.migration do
       String :price,       :null => false
       Float  :latitude,    :null => false
       Float  :longitude,   :null => false
+      TrueClass :promoted, :null => false, :default => false
 
       Time :created_at, :null => false
       Time :updated_at, :null => false

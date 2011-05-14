@@ -61,7 +61,7 @@ Image:<input name="image" type="file">
         token = rand(36**12).to_s(36) while token.length < 8
         token = token[0..7]
       end
-      image_path = "./files/#{token}.png"
+      image_path = "./public/files/#{token}.png"
       FileUtils.cp(tempfile.path, image_path)
 
       profile = Profile.find_or_create(params['facebookId'])
@@ -71,7 +71,8 @@ Image:<input name="image" type="file">
                       :price => params['price'],
                       :latitude => params['lat'],
                       :longitude => params['long'],
-                      :image_path => image_path)
+                      :image_path => image_path,
+                      :promoted => false)
       item.save
       params['tags'].split(/\s+/).each do |t|
         t = Tag.find_or_create(t)
@@ -82,6 +83,27 @@ Image:<input name="image" type="file">
       json({'itemId' => item.token})
     end
 
+    get '/item/:id' do
+      item = Item.find_by_token(params[:id])
+      tags = item.tags_dataset.all.map {|t| t.name}
+      json({ 'facebookId' => item.profile.facebook_id,
+             'title' => item.title,
+             'description' => item.description,
+             'price' => item.price,
+             'tags' => tags,
+             'lat' => item.latitude,
+             'long' =>item.longitude,
+             'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
+    end
+
+    post '/item/:id/promote' do
+      'todo'
+    end
+    
+    post '/items/promoted' do
+      Item.filter(:promoted => true)
+      'todo'
+    end
 
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
