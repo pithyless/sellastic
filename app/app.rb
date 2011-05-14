@@ -146,6 +146,14 @@ Image:<input name="image" type="file">
       json({'tags' => ts})
     end
 
+    get '/tags/top' do
+      ts = DB[:items_tags].group_and_count(:tag_id___name).order(:count.desc)
+      ts = ts.limit(10).all
+      tags = ts.map { |x| Tag.filter(:id => x[:name]).first.name }
+      json({'tags' => tags})
+    end
+
+
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
       #                        'experience_level', 'willing_to_travel'))
