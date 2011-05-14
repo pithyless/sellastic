@@ -31,6 +31,19 @@ module Sellastic
     # Redirect trailing slashes
     get %r{(.+)/$} do |r| redirect r; end;
 
+    get '/?' do
+      '<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sellastic</title>
+</head>
+<body>
+<img src="/logo.png" style="display:block;margin-left:auto;margin-right:auto;">
+</body>
+</html>'
+    end
+
     get '/test' do
       '
 <html>
