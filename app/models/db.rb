@@ -2,6 +2,8 @@
 # DB = Sequel.sqlite
 
 case RACK_ENV
+when 'production'
+  DB = Sequel.postgres('sellastic_prod', :user => 'sellastic', :host => 'localhost')
 when 'development'
   DB = Sequel.postgres('sellastic_development', :user => 'sellastic', :host => 'localhost')
 when 'test'
