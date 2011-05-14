@@ -98,6 +98,23 @@ Image:<input name="image" type="file">
       json({'itemId' => item.token})
     end
 
+    post '/item/edit/:itemid' do
+      item = Item.filter(:id => params[:itemid]).first
+
+      item.title = params['title']
+      item.description = params['description']
+      item.price = params['price']
+      item.save
+
+      item.remove_all_tags
+      params['tags'].split(/\s+/).each do |t|
+        t = Tag.find_or_create(t)
+        item.add_tag(t)
+      end
+      json({'itemId' => item.token})
+    end
+
+
     get '/item/:id' do
       item = Item.find_by_token(params[:id])
       tags = item.tags_dataset.all.map {|t| t.name}
