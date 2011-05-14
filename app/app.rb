@@ -168,6 +168,23 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/items/friendsnearby' do
+      lat = params['lat'].to_f
+      lon = params['long'].to_f
+      rad = params['radius'].to_f # in kilometers
+      items_ds = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000)
+
+      fbid = params['facebookId']
+      profile = Profile.find_or_create(fbid)
+      ids = profile.friends_dataset.all.map {|x| x.id}
+
+      items = []
+      ids.each do |id|
+        items += items_ds.filter(:profile_id  => id).all
+      end
+      json_items(items)
+    end
+
     post '/friends/:fbid' do
       profile = Profile.find_or_create(params[:fbid])
       friends = params[:friends].split(/\s+/)
