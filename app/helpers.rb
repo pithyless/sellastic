@@ -106,6 +106,16 @@ module Sellastic
       Yajl::Encoder.encode(data)
     end
 
+    def json_items(items = [])
+      data = items.map do |item|
+        { 'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
+          'facebookId' => item.profile.facebook_id,
+          'title' => item.title,
+          'price' => item.price }
+      end
+      json({'items' => data})
+    end
+
     def logged_in?
       !!@user
     end

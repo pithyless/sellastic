@@ -96,13 +96,16 @@ Image:<input name="image" type="file">
              'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
     end
 
-    post '/item/:id/promote' do
-      'todo'
+    get '/item/:id/promote' do
+      item = Item.find_by_token(params[:id])
+      item.promoted = true
+      item.save
+      json({'promoted' => item.promoted})      
     end
     
-    post '/items/promoted' do
-      Item.filter(:promoted => true)
-      'todo'
+    get '/items/promoted' do
+      items = Item.filter(:promoted => true).all
+      json_items(items)
     end
 
       # p = params['talent']
