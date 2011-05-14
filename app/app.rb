@@ -132,6 +132,13 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/items/tag' do
+      tag = params['tag']
+      # todo: temporary hack :)
+      items = Item.eager(:tags).all.find_all {|x| (x.tags.map {|y| y.name}).include?(tag)}
+      json_items(items)
+    end
+
     post '/friends/:fbid' do
       profile = Profile.find_or_create(params[:fbid])
       friends = params[:friends].split(/\s+/)
