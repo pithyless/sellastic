@@ -141,6 +141,11 @@ Image:<input name="image" type="file">
       friends.size.to_s
     end
 
+    get '/tags/alpha' do
+      ts = Tag.order(:name.asc).all.map {|x| x.name }
+      json({'tags' => ts})
+    end
+
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
       #                        'experience_level', 'willing_to_travel'))
