@@ -5,9 +5,10 @@ set :application, "sellastic"
  
 set :scm, :git
 set :git_enable_submodules, 1
-set :repository, "github.com/pithyless/sellastic.git"
+set :repository, "git@github.com:pithyless/sellastic.git"
 set :branch, "master"
 set :ssh_options, { :forward_agent => true }
+
  
 set :stage, :production
 set :user, "norbert"
