@@ -132,6 +132,12 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/friends/:fbid' do
+      profile = Profile.find_or_create(params[:fbid])
+      friends = params[:friends].split(/\s+/).each do |fid|
+        profile.add_friend(Profile.find_or_create(fid))
+      end
+    end
 
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
