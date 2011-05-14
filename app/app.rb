@@ -30,7 +30,7 @@ module Sellastic
     # Redirect trailing slashes
     get %r{(.+)/$} do |r| redirect r; end;
 
-    get '/' do
+    get '/?' do
       'test'
     end
 
