@@ -17,15 +17,18 @@ Sequel.migration do
     create_table(:items) do
       primary_key :id
 
+      String :token,       :null => false, :unique => true
       String :image_path,  :null => false
       String :title,       :null => false
       String :description, :null => false
-      BigDecimal :price,   :null => false, :size => [10, 2]
+      String :price,       :null => false
       Float  :latitude,    :null => false
       Float  :longitude,   :null => false
 
       Time :created_at, :null => false
       Time :updated_at, :null => false
+
+      foreign_key :profile_id, :profiles
     end
 
     create_table(:tags) do

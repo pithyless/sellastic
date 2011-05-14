@@ -6,6 +6,10 @@ class Profile < Sequel::Model
   one_to_many :items
   many_to_many :friends, :left_key => :jack_id, :right_key => :jill_id,
                          :join_table => :friends, :class => self
+
+  def self.find_or_create(fbid)
+    Profile.filter(:facebook_id => fbid).first || Profile.create(:facebook_id => fbid)
+  end
 end
 
 class Item < Sequel::Model
@@ -23,6 +27,10 @@ end
 
 class Tag < Sequel::Model
   many_to_many :items
+
+  def self.find_or_create(tag)
+    Tag.filter(:name => tag).first || Tag.create(:name => tag)
+  end
 end
 
 

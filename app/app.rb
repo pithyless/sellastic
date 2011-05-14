@@ -1,4 +1,5 @@
 require 'app/libraries'
+require 'fileutils'
 
 module Sellastic
   class App < Sinatra::Base
@@ -30,9 +31,82 @@ module Sellastic
     # Redirect trailing slashes
     get %r{(.+)/$} do |r| redirect r; end;
 
-    get '/foo/?' do
-      'test'
+    get '/test' do
+      '
+<html>
+<body>
+<form action="/item" enctype="multiform/form-data" method="post">
+<fieldset>
+fbid: <input type="text" name="facebookId"><br>
+title: <input type="text" name="title"><br>
+description: <input type="text" name="description"><br>
+price: <input type="text" name="price"><br>
+lat: <input type="text" name="lat"><br>
+long: <input type="text" name="long"><br>
+tags: <input type="text" name="tags"><br>
+Image:<input name="image" type="file">
+<input type="submit" value="Upload">
+</fieldset>
+</form>
+</body>
+</html>
+'
     end
+
+    post '/item' do
+      tempfile = params['image'][:tempfile]
+
+      token = ''
+      while token.blank? or (not Item.filter(:token => token).empty?)
+        token = rand(36**12).to_s(36) while token.length < 8
+        token = token[0..7]
+      end
+      image_path = "./files/#{token}.png"
+      FileUtils.cp(tempfile.path, image_path)
+
+      profile = Profile.find_or_create(params['facebookId'])
+      item = Item.new(:token => token,
+                      :title => params['title'],
+                      :description => params['description'],
+                      :price => params['price'],
+                      :latitude => params['lat'],
+                      :longitude => params['long'],
+                      :image_path => image_path)
+      item.save
+      params['tags'].split(/\s+/).each do |t|
+        t = Tag.find_or_create(t)
+        item.add_tag(t)
+      end
+      profile.add_item(item)
+
+      json({'itemId' => item.token})
+    end
+
+
+      # p = params['talent']
+      # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
+      #                        'experience_level', 'willing_to_travel'))
+      # t.location = Location.filter(:city => p['city_name']).first
+      # if t.valid?
+      #   t.published = true
+      #   t.moderate  = true
+      #   # TODO: temporarily setting created_at and updated_at
+      #   t.created_at = Time.now
+      #   t.updated_at = t.created_at
+
+      #   @talent = t.save
+      #   # TODO: send_email asynchronously
+      #   send_email_praca(t.email, 
+      #                    'Witamy w 1000it.pl!',
+      #                    erb(:email_talent_welcome, :layout => false))
+      #   # TODO: make a better email_talent_welcome template :)
+      #   redirect to(url_for('new_talent_thanks'))
+      # else
+      #   @talent = t
+      #   @talent_city_name = t.location ? t.location.city : ''
+      #   erb :new_talent
+      # end
+
 
     # get '/cities/autocomplete' do
     #   limit = 10
