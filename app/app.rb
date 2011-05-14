@@ -99,7 +99,7 @@ Image:<input name="image" type="file">
     end
 
     post '/item/edit/:itemid' do
-      item = Item.filter(:id => params[:itemid]).first
+      item = Item.filter(:token => params[:itemid]).first
 
       item.title = params['title']
       item.description = params['description']
