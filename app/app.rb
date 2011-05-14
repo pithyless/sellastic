@@ -137,6 +137,7 @@ Image:<input name="image" type="file">
       friends = params[:friends].split(/\s+/).each do |fid|
         profile.add_friend(Profile.find_or_create(fid))
       end
+      'OK'
     end
 
       # p = params['talent']
