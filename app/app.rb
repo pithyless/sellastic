@@ -141,6 +141,18 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/items/friends' do
+      fbid = params['facebookId']
+      profile = Profile.find_or_create(fbid)
+      ids = profile.friends_dataset.all.map {|x| x.id}
+
+      items = []
+      ids.each do |id|
+        items += Item.filter(:profile_id  => id).all
+      end
+      json_items(items)
+    end
+
     post '/items/location' do
       lat = params['lat'].to_f
       lon = params['long'].to_f
