@@ -22,10 +22,10 @@ class Item < Sequel::Model
     Item.filter(:token => t).first
   end
 
-  def self.find_nearby(lat, long)
-    # TODO:
-    # SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat)
-    # + cos(1.3963) * cos(Lat) * cos(Lon - (-0.6981))) * 6371 <= 1000;
+  def self.find_nearby(lat, lon, range)
+    Item.filter('(acos(cos(?)*cos(?)*cos(latitude)*cos(longitude) + ' +
+                '      cos(?)*sin(?)*cos(latitude)*sin(longitude) + ' +
+                '      sin(?)*sin(latitude) ) * 6371000) <= ?', lat, lon, lat, lon, lat, range)
   end
 end
 

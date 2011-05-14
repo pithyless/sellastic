@@ -101,6 +101,10 @@ module Sellastic
       yield if @debug
     end
 
+    def deg2rad(deg)
+      (deg * Math::PI / 180)
+    end
+
     def json(data = {})
       content_type 'application/json; charset=utf-8'
       Yajl::Encoder.encode(data)

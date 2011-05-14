@@ -86,6 +86,8 @@ Image:<input name="image" type="file">
                       :longitude => params['long'],
                       :image_path => image_path,
                       :promoted => false)
+      item.latitude  = deg2rad(item.latitude)
+      item.longitude = deg2rad(item.longitude)
       item.save
       params['tags'].split(/\s+/).each do |t|
         t = Tag.find_or_create(t)
@@ -105,7 +107,7 @@ Image:<input name="image" type="file">
              'price' => item.price,
              'tags' => tags,
              'lat' => item.latitude,
-             'long' =>item.longitude,
+             'long' => item.longitude,
              'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
     end
 
@@ -121,6 +123,15 @@ Image:<input name="image" type="file">
       items = items.to_a.sort_by { rand }
       json_items(items)
     end
+
+    post '/items/location' do
+      lat = params['lat'].to_f
+      lon = params['long'].to_f
+      rad = params['radius'].to_f # in kilometers
+      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+      json_items(items)
+    end
+
 
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
