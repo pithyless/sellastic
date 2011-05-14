@@ -31,7 +31,7 @@ Sequel.migration do
     create_table(:tags) do
       primary_key :id
 
-      String name, :null => false, :unique => true
+      String :name, :null => false, :unique => true
     end
 
     create_table(:items_tags) do
