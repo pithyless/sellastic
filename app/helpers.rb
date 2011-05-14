@@ -108,7 +108,8 @@ module Sellastic
 
     def json_items(items = [])
       data = items.map do |item|
-        { 'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
+        { 'itemId'   => item.token,
+          'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
           'facebookId' => item.profile.facebook_id,
           'title' => item.title,
           'price' => item.price }
