@@ -115,8 +115,14 @@ module Sellastic
     end
 
     def json_items(items = [])
-      data = items.map do |item|
-        { 'itemId'   => item.token,
+      data = []
+      h = {}
+
+      items.each do |item|
+        next if h.key?(item.token)
+        h[item.token] = true
+        data << { 
+          'itemId'   => item.token,
           'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
           'thumbnailUrl' => "http://sellastic.com/files/100_#{item.token}.png",
           'facebookId' => item.profile.facebook_id,
@@ -128,8 +134,7 @@ module Sellastic
           'latitude' => item.latitude,
           'longitude' => item.longitude,
           'created_at' => item.created_at,
-          'updated_at' => item.updated_at
-        }
+          'updated_at' => item.updated_at }
       end
       json({'items' => data})
     end
