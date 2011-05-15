@@ -171,7 +171,7 @@ Image:<input name="image" type="file">
       lat = params['lat'].to_f
       lon = params['long'].to_f
       rad = params['radius'].to_f # in kilometers
-      items = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
       json_items(items)
     end
 
@@ -194,7 +194,7 @@ Image:<input name="image" type="file">
       lat = params['lat'].to_f
       lon = params['long'].to_f
       rad = params['radius'].to_f # in kilometers
-      items_ds = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000)
+      items_ds = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000)
 
       fbid = params['facebookId']
       profile = Profile.find_or_create(fbid)
@@ -232,7 +232,7 @@ Image:<input name="image" type="file">
       lat = 52.2296756
       lon = 21.0122287
       rad = 10
-      items = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
 
       markers = items.map do |item|
         { 'lat' => rad2deg(item.latitude),
