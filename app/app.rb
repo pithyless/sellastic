@@ -188,14 +188,14 @@ Image:<input name="image" type="file">
 
     post '/items/profile' do
       profile = Profile.find_or_create(params['facebookId'])
-      items = Item.to_buy.filter(:profile_id => profile.id)
+      items = Item.to_buy.filter(:profile_id => profile.id).all
       json_items(items)
     end
 
     post '/items/search' do
       q = params['query']
       items = Item.to_buy
-      items = items.filter(:title.ilike('%?%', q) | :description.ilike('%?%', q))
+      items = items.filter(:title.ilike('%?%', q) | :description.ilike('%?%', q)).all
       # todo: search by tags
       json_items(items)
     end

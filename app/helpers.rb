@@ -118,7 +118,7 @@ module Sellastic
       data = []
       h = {}
 
-      items.all.each do |item|
+      items.each do |item|
         next if h.key?(item.token)
         h[item.token] = true
         data << { 
