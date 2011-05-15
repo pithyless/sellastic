@@ -105,6 +105,10 @@ module Sellastic
       (deg * Math::PI / 180)
     end
 
+    def rad2deg(deg)
+      (deg * 180 / Math::PI)
+    end
+
     def json(data = {})
       content_type 'application/json; charset=utf-8'
       Yajl::Encoder.encode(data)

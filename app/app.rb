@@ -206,6 +206,29 @@ Image:<input name="image" type="file">
       json({'tags' => tags})
     end
 
+    get '/mapdata.json' do
+      lat = 52.2296756
+      lon = 21.0122287
+      rad = 10
+      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+
+      markers = items.map do |item|
+        { 'lat' => rad2deg(item.latitude),
+          'lng' => rad2deg(item.longitude),
+          'html' => "<img src='/files/#{item.token}.png'/><br> #{item.description}",
+          'label' => item.title,
+          'icon_url' =>  "/files/#{item.token}.png"
+        }
+      end
+
+      json({ "markers" => markers,
+             "lines" => []})
+    end
+
+    get '/map' do
+      erubis :map, :layout => false
+    end
+
 
       # p = params['talent']
       # t = Talent.new(p.slice('email', 'skills', 'experience_bio', 'gold_star_bio',
