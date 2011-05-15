@@ -18,7 +18,6 @@
       try again.
     </noscript>
 
-
     <script type="text/javascript">
     //<![CDATA[
     if (GBrowserIsCompatible()) {
@@ -88,6 +87,12 @@
       // ================================================================
       // === Fetch the JSON data file ====    
       GDownloadUrl("/mapdata.json", process_it);
+
+      function reFresh() {
+        GDownloadUrl("/mapdata.json", process_it);
+      }
+      window.setInterval("reFresh()",15000);
+
       // ================================================================
 
     }
