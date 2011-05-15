@@ -186,6 +186,12 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/items/profile' do
+      profile = Profile.find_or_create(params['facebookId'])
+      items = Item.to_buy.filter(:profile_id => profile.facebook_id)
+      json_items(items)
+    end
+
     post '/items/search' do
       q = params['query']
       items = Item.to_buy.filter(:sold => false)
