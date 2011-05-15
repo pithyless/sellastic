@@ -359,7 +359,16 @@ Image:<input name="image" type="file">
     #
 
     not_found do
-      erb :'404'
+      '<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sellastic</title>
+</head>
+<body>
+<img src="/logo.png" style="display:block;margin-left:auto;margin-right:auto;">
+</body>
+</html>'
     end
 
     # TODO: set show exceptions ?
