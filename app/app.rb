@@ -195,9 +195,11 @@ Image:<input name="image" type="file">
     post '/items/search' do
       q = params['query']
       items = Item.to_buy
-      items = items.filter(:title.ilike('%?%', q) | :description.ilike('%?%', q)).all
+      # this is another pre-presentation #swwaw hack :/
+      items1 = items.filter(:title.ilike('%?%', q)).all
+      items2 = items.filter(:description.ilike('%?%', q)).all
       # todo: search by tags
-      json_items(items)
+      json_items(items1 + items2)
     end
 
     post '/items/friendsnearby' do
