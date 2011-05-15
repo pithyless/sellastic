@@ -77,6 +77,9 @@ Image:<input name="image" type="file">
       image_path = "./public/files/#{token}.png"
       FileUtils.cp(tempfile.path, image_path)
 
+      # make thumbnail - quick #swwaw hack :)
+      `convert #{image_path} -resize 100x100 ./public/files/100_#{token}.png`
+
       profile = Profile.find_or_create(params['facebookId'])
       item = Item.new(:token => token,
                       :title => params['title'],
@@ -125,6 +128,7 @@ Image:<input name="image" type="file">
              'tags' => tags,
              'lat' => item.latitude,
              'long' => item.longitude,
+             'thumbnailUrl' => "http://sellastic.com/files/100_#{item.token}.png",
              'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
     end
 

@@ -118,6 +118,7 @@ module Sellastic
       data = items.map do |item|
         { 'itemId'   => item.token,
           'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
+          'thumbnailUrl' => "http://sellastic.com/files/100_#{item.token}.png",
           'facebookId' => item.profile.facebook_id,
           'title' => item.title,
           'price' => item.price,
