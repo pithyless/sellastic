@@ -241,7 +241,7 @@ Image:<input name="image" type="file">
       markers = items.map do |item|
         { 'lat' => rad2deg(item.latitude),
           'lng' => rad2deg(item.longitude),
-          'html' => "<img src='/files/#{item.token}.png'/><br> #{item.description}",
+          'html' => "<img src='/files/#{item.token}.png' style='width:250px;'/><br> #{item.description}",
           'label' => item.title,
           'icon_url' =>  "/files/#{item.token}.png"
         }
