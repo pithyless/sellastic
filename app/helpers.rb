@@ -120,7 +120,15 @@ module Sellastic
           'imageUrl' => "http://sellastic.com/files/#{item.token}.png",
           'facebookId' => item.profile.facebook_id,
           'title' => item.title,
-          'price' => item.price }
+          'price' => item.price,
+          'description' => item.description,
+          'promoted' => (item.promoted ? 1 : 0),
+          'sold' => (item.sold ? 1 : 0),
+          'latitude' => item.latitude,
+          'longitude' => item.longitude,
+          'created_at' => item.created_at,
+          'updated_at' => item.updated_at
+        }
       end
       json({'items' => data})
     end
