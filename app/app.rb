@@ -132,7 +132,7 @@ Image:<input name="image" type="file">
              'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
     end
 
-    post '/item/:id/promote' do
+    get '/item/:id/promote' do
       item = Item.find_by_token(params[:id])
       item.promoted = true
       item.save
@@ -195,11 +195,9 @@ Image:<input name="image" type="file">
     post '/items/search' do
       q = params['query']
       items = Item.to_buy
-      # this is another pre-presentation #swwaw hack :/
-      items1 = items.filter(:title.ilike('%?%', q)).all
-      items2 = items.filter(:description.ilike('%?%', q)).all
+      items = items.filter(:title.ilike("%#{q}%") | :description.ilike("%#{q}%")).all
       # todo: search by tags
-      json_items(items1 + items2)
+      json_items(items)
     end
 
     post '/items/friendsnearby' do
