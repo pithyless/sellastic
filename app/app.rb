@@ -168,6 +168,14 @@ Image:<input name="image" type="file">
       json_items(items)
     end
 
+    post '/items/search' do
+      q = params['query']
+      items = Item.filter(:sold => false)
+      items = items.filter(:title.ilike('%?%', q) | :description.ilike('%?%', q))
+      # todo: search by tags
+      json_items(items)
+    end
+
     post '/items/friendsnearby' do
       lat = params['lat'].to_f
       lon = params['long'].to_f
