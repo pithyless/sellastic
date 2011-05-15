@@ -26,6 +26,7 @@ Sequel.migration do
       Float  :longitude,   :null => false
       TrueClass :promoted, :null => false, :default => false
       TrueClass :sold,     :null => false, :default => false
+      TrueClass :deleted,     :null => false, :default => false
 
       Time :created_at, :null => false
       Time :updated_at, :null => false

@@ -128,15 +128,29 @@ Image:<input name="image" type="file">
              'imageUrl' => "http://sellastic.com/files/#{item.token}.png" })
     end
 
-    get '/item/:id/promote' do
+    post '/item/:id/promote' do
       item = Item.find_by_token(params[:id])
       item.promoted = true
       item.save
       json({'promoted' => item.promoted})      
     end
+
+    post '/item/:id/delete' do
+      item = Item.find_by_token(params[:id])
+      item.deleted = true
+      item.save
+      json({'deleted' => item.deleted})      
+    end
+
+    post '/item/:id/sell' do
+      item = Item.find_by_token(params[:id])
+      item.sold = true
+      item.save
+      json({'sold' => item.sold})      
+    end
     
     post '/items/promoted' do
-      items = Item.filter(:promoted => true).all
+      items = Item.to_buy.filter(:promoted => true).all
       items = items.to_a.sort_by { rand }
       json_items(items)
     end
@@ -148,7 +162,7 @@ Image:<input name="image" type="file">
 
       items = []
       ids.each do |id|
-        items += Item.filter(:profile_id  => id).all
+        items += Item.to_buy.filter(:profile_id  => id).all
       end
       json_items(items)
     end
@@ -157,20 +171,20 @@ Image:<input name="image" type="file">
       lat = params['lat'].to_f
       lon = params['long'].to_f
       rad = params['radius'].to_f # in kilometers
-      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+      items = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
       json_items(items)
     end
 
     post '/items/tag' do
       tag = params['tag']
       # todo: temporary hack :)
-      items = Item.eager(:tags).all.find_all {|x| (x.tags.map {|y| y.name}).include?(tag)}
+      items = Item.to_buy.eager(:tags).all.find_all {|x| (x.tags.map {|y| y.name}).include?(tag)}
       json_items(items)
     end
 
     post '/items/search' do
       q = params['query']
-      items = Item.filter(:sold => false)
+      items = Item.to_buy.filter(:sold => false)
       items = items.filter(:title.ilike('%?%', q) | :description.ilike('%?%', q))
       # todo: search by tags
       json_items(items)
@@ -180,7 +194,7 @@ Image:<input name="image" type="file">
       lat = params['lat'].to_f
       lon = params['long'].to_f
       rad = params['radius'].to_f # in kilometers
-      items_ds = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000)
+      items_ds = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000)
 
       fbid = params['facebookId']
       profile = Profile.find_or_create(fbid)
@@ -218,7 +232,7 @@ Image:<input name="image" type="file">
       lat = 52.2296756
       lon = 21.0122287
       rad = 10
-      items = Item.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
+      items = Item.to_buy.find_nearby(deg2rad(lat), deg2rad(lon), rad * 1000).all
 
       markers = items.map do |item|
         { 'lat' => rad2deg(item.latitude),

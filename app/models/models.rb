@@ -22,8 +22,12 @@ class Item < Sequel::Model
     Item.filter(:token => t).first
   end
 
+  def self.to_buy
+    Item.filter(:sold => false).filter(:deleted => false)
+  end
+
   def self.find_nearby(lat, lon, range)
-    Item.filter('(acos(cos(?)*cos(?)*cos(latitude)*cos(longitude) + ' +
+    Item.to_buy.filter('(acos(cos(?)*cos(?)*cos(latitude)*cos(longitude) + ' +
                 '      cos(?)*sin(?)*cos(latitude)*sin(longitude) + ' +
                 '      sin(?)*sin(latitude) ) * 6371000) <= ?', lat, lon, lat, lon, lat, range)
   end
