@@ -8,17 +8,7 @@
   <body onunload="GUnload()">
 
     <!-- you can use tables or divs for the overall layout -->
-    <table border=1>
-      <tr>
-        <td>
-           <div id="map" style="width: 550px; height: 450px"></div>
-        </td>
-        <td width = 150 valign="top" style="text-decoration: underline; color: #4444ff;">
-           <div id="side_bar"></div>
-        </td>
-      </tr>
-    </table>
-    <a href="basic12.htm">Back to the tutorial page</a>
+    <div id="map" style="width: 1050px; height: 750px; margin-left:auto; margin-right:auto;"></div>
 
 
     <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b> 
@@ -35,7 +25,7 @@
       var map = new GMap(document.getElementById("map"));
       map.addControl(new GLargeMapControl());
       map.addControl(new GMapTypeControl());
-      map.setCenter(new GLatLng(52.2296756, 21.0122287),9);
+      map.setCenter(new GLatLng(52.2296756, 21.0122287),13);
    
       // arrays to hold copies of the markers and html used by the side_bar
       // because the function closure trick doesnt work there
