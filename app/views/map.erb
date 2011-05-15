@@ -63,6 +63,9 @@
         // === Plot the markers ===
         for (var i=0; i<jsonData.markers.length; i++) {
           var icontype= new GIcon(G_DEFAULT_ICON, jsonData.markers[i].icon_url);
+          icontype.iconSize = new GSize(54, 90);
+          icontype.shadowSize = new GSize(99, 90);
+
           var point = new GLatLng(jsonData.markers[i].lat, jsonData.markers[i].lng);
           var marker = createMarker(point, jsonData.markers[i].label, jsonData.markers[i].html, icontype);
           map.addOverlay(marker);
