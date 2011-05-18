@@ -29,21 +29,23 @@ context 'POST /item' do
     asserts('Status') {topic.status}.equals(200)
     asserts('added item'){ Item.count }.equals(1)
     asserts('response') {topic.body =~ /{"itemId":"\w+"}/}
+
+    context 'GET /item/:id' do
+      helper(:itemid) { /{"itemId":"(\w+)"}/.match(topic.body)[1] }
+      setup do
+        @itemid = itemid
+        get "/item/#{itemid}"
+        last_response
+      end
+
+      asserts('Status') {topic.status}.equals(200)
+      asserts('response') {topic.body ==
+        "{\"facebookId\":\"test42\",\"title\":\"title\",\"description\":\"description\",\"price\":\"$234.23\",\"tags\":[\"one\",\"two\",\"three\"],\"lat\":0.408814404814089,\"long\":0.37429109407794,\"thumbnailUrl\":\"http://sellastic.com/files/100_#{@itemid}.png\",\"imageUrl\":\"http://sellastic.com/files/#{@itemid}.png\"}" }
+    end
   end
 end
 
 
-    # context 'GET /item/:id' do
-    #   helper(:itemid) { /{"itemId":"(\w+)"}/.match(topic.body)[1] }
-
-    #   setup { get "/item/#{itemid}" }
-
-    #   asserts('Status') {topic[0].status}.equals(200)
-
-    #   asserts('response') {topic[0].body ==
-    #     "{\"facebookId\":\"test42\",\"title\":\"title\",\"description\":\"description\",\"price\":\"$234.23\",\"tags\":[\"one\",\"two\",\"three\"],\"lat\":0.408814404814089,\"long\":0.37429109407794,\"thumbnailUrl\":\"http://sellastic.com/files/100_#{topic[1]}.png\",\"imageUrl\":\"http://sellastic.com/files/#{topic[1]}.png\"}" }
-
-    # end
 
 
 # context 'POST /authenticate' do
