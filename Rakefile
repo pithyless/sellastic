@@ -14,7 +14,6 @@ namespace :db do
     task :prepare do
       ENV['RACK_ENV'] = 'test'
       `sequel -m db/migrations postgres://sellastic@localhost/sellastic_test`
-      ruby 'db/seed.rb'
     end
   end
 end
