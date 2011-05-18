@@ -42,6 +42,29 @@ context 'POST /item' do
       asserts('response') {topic.body ==
         "{\"facebookId\":\"test42\",\"title\":\"title\",\"description\":\"description\",\"price\":\"$234.23\",\"tags\":[\"one\",\"two\",\"three\"],\"lat\":0.408814404814089,\"long\":0.37429109407794,\"thumbnailUrl\":\"http://sellastic.com/files/100_#{@itemid}.png\",\"imageUrl\":\"http://sellastic.com/files/#{@itemid}.png\"}" }
     end
+
+    context 'POST /item/edit/:id' do
+      helper(:itemid) { /{"itemId":"(\w+)"}/.match(topic.body)[1] }
+      setup do
+        @itemid = itemid
+        post "/item/edit/#{itemid}", params.merge({'title' => 'title2',
+                                                    'description' => 'description2',
+                                                    'price' => '$934.23',
+                                                    'tags' => 'one three five seven'})
+        last_response
+      end
+
+      asserts('Status') {topic.status}.equals(200)
+      asserts('response') { topic.body == "{\"itemId\":\"#{@itemid}\"}" }
+
+    context 'Edited GET /item/:id' do
+        setup { get "/item/#{@itemid}" }
+
+        asserts('Status') {topic.status}.equals(200)
+        asserts('response') {topic.body ==
+          "{\"facebookId\":\"test42\",\"title\":\"title2\",\"description\":\"description2\",\"price\":\"$934.23\",\"tags\":[\"one\",\"three\",\"five\",\"seven\"],\"lat\":0.408814404814089,\"long\":0.37429109407794,\"thumbnailUrl\":\"http://sellastic.com/files/100_#{@itemid}.png\",\"imageUrl\":\"http://sellastic.com/files/#{@itemid}.png\"}" }
+      end
+    end
   end
 end
 
