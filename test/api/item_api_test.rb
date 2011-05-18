@@ -68,78 +68,16 @@ context 'POST /item' do
   end
 end
 
+context 'Item' do
+  setup { @item = Item.all[0] }
+  asserts { topic.promoted == false }
+
+  context 'Promote' do
+    setup { get "/item/#{topic.token}/promote" }
+    asserts('Status') {topic.status}.equals(200)
+    asserts('response') {topic.body}.equals('{"promoted":true}')
+    asserts('item promoted'){ @item.reload.promoted == true }
+  end
+end
 
 
-
-# context 'POST /authenticate' do
-#   context 'good' do
-#     setup do
-#       clear_cookies
-#       post '/authenticate', :facebookId => 'test123'
-#       last_response
-#     end
-
-#     asserts('Status') { topic.status }.equals(200)
-#     asserts('Sets session cookie') do
-#       last_response.headers['Set-Cookie'] =~ /rack.session=/
-#     end
-
-#     context 'cookie is usable' do
-#       setup { post '/logintest' }
-#       asserts('Status') { topic.status }.equals(200)
-#       asserts('User login') { topic.body }.equals('OK: test123')
-
-#       context 'other login' do
-#         setup { post '/authenticate', :facebookId => 'test321'; post '/logintest' }
-#         asserts('Status') { topic.status }.equals(200)
-#         asserts('User login') { topic.body }.equals('OK: test321')
-#       end
-#     end
-#   end
-
-#   context 'bad' do
-#     setup do
-#       clear_cookies
-#       post '/authenticate', :facebookId => ''
-#       last_response
-#     end
-
-#     denies('Status') { topic.status }.equals(403)
-#   end
-
-#   context 'bad secret' do
-#     # TODO: denies if secret hash is miscalculated
-#   end
-# end
-
-
-#   # asserts('one item'){ Item.count }.equals(1)
-
-#   # context 'Detailed view' do
-#   #   setup do
-#   #     profile = user.profile
-#   #     item = Item.save_new(profile,
-#   #                   :facebook_id => 'test123',
-#   #                   :title       => 'title',
-#   #                   :description => 'description',
-#   #                   :price       => '$123.23',
-#   #                   :lat         => '24.1234',
-#   #                   :lon         => '12.2345',
-#   #                   :tags        => 'cat dogs book')
-#   #   end
-#   # end
-
-#   # TODO: /item/:id
-
-#   # TODO: /edit
-
-
-
-# #     # TODO
-# #     # asserts('Should save'){ false}
-# #     # asserts('Set token'){ false }
-# #     # asserts('Unique token'){ false }
-# #     # asserts('Set date_created'){ false }
-
-# #   end
-# # end
