@@ -1,3 +1,4 @@
+load 'deploy' if respond_to?(:namespace)
 
 set :stage, :production
 set :domain, "sellastic.com"
