@@ -32,6 +32,9 @@ set :normalize_asset_timestamps, false
 
 namespace :deploy do
   task :start, :roles => :app do
+    run "rm #{current_release}/public/files/tmp"
+    run "rmdir #{current_release}/public/files"
+    run "ln -s /srv/app-data/production/sellastic.com/files #{current_release}/public/files"
     run "touch #{current_release}/tmp/restart.txt"
   end
 
