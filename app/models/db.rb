@@ -3,7 +3,7 @@
 
 case RACK_ENV
 when 'production'
-  DB = Sequel.postgres('sellastic_prod', :user => 'sellastic', :password => 'sellastic', :host => 'localhost')
+  DB = Sequel.postgres('sellastic_production', :user => 'sellastic', :password => 's3ll4stic', :host => 'localhost')
 when 'development'
   DB = Sequel.postgres('sellastic_development', :user => 'sellastic', :host => 'localhost')
 when 'test'
