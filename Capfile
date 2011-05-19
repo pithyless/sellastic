@@ -34,6 +34,10 @@ namespace :deploy do
   task :start, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
+
+  task :migrate, :roles => :app do
+    run "sequel -m db/migrations postgres://sellastic:s3ll4stic@localhost/sellastic_production"
+  end
  
   task :stop, :roles => :app do
     # Do nothing.
