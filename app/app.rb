@@ -120,6 +120,7 @@ Image:<input name="image" type="file">
 
     get '/item/:id' do
       item = Item.find_by_token(params[:id])
+      throw :halt, [404, 'Not found'] if item.nil?
       tags = item.tags_dataset.all.map {|t| t.name}
       json({ 'facebookId' => item.profile.facebook_id,
              'title' => item.title,
@@ -266,6 +267,7 @@ Image:<input name="image" type="file">
     #
 
     not_found do
+      error 404,
       '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -273,6 +275,7 @@ Image:<input name="image" type="file">
 <title>Sellastic</title>
 </head>
 <body>
+<h1>404 - Not found</h1>
 <img src="/logo.png" style="display:block;margin-left:auto;margin-right:auto;">
 </body>
 </html>'
