@@ -32,38 +32,11 @@ module Sellastic
     get %r{(.+)/$} do |r| redirect r; end;
 
     get '/?' do
-      '<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Sellastic</title>
-</head>
-<body>
-<img src="/logo.png" style="display:block;margin-left:auto;margin-right:auto;">
-</body>
-</html>'
+      erubis :home, :layout => false
     end
 
     get '/test' do
-      '
-<html>
-<body>
-<form action="/item" enctype="multiform/form-data" method="post">
-<fieldset>
-fbid: <input type="text" name="facebookId"><br>
-title: <input type="text" name="title"><br>
-description: <input type="text" name="description"><br>
-price: <input type="text" name="price"><br>
-lat: <input type="text" name="lat"><br>
-long: <input type="text" name="long"><br>
-tags: <input type="text" name="tags"><br>
-Image:<input name="image" type="file">
-<input type="submit" value="Upload">
-</fieldset>
-</form>
-</body>
-</html>
-'
+      erubis :test, :layout => false
     end
 
     post '/item' do
