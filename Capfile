@@ -36,7 +36,7 @@ namespace :deploy do
   end
 
   task :migrate, :roles => :app do
-    run "sequel -m db/migrations postgres://sellastic:s3ll4stic@localhost/sellastic_production"
+    run "bundle exec sequel -m db/migrations postgres://sellastic:s3ll4stic@localhost/sellastic_production"
   end
  
   task :stop, :roles => :app do
