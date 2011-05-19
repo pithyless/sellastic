@@ -22,6 +22,12 @@ role :app, domain
 role :web, domain
 role :db, domain, :primary => true
 
+# TODO: temporary
+set :normalize_asset_timestamps, false
+# see also:
+# http://stackoverflow.com/questions/3023857/capistrano-and-deployment-of-a-website-from-github
+# set :assets_dir, %w(public/files public/att)
+
 namespace :deploy do
   task :start, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
