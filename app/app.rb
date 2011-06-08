@@ -40,6 +40,7 @@ module Sellastic
     end
 
     post '/item' do
+      throw :halt, [404, 'Not found'] if params['image'].nil? or params['image'][:tempfile].nil?
       tempfile = params['image'][:tempfile]
 
       token = ''
